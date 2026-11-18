@@ -3,643 +3,920 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#160b1e">
-<title>Для Дари</title>
+<meta name="theme-color" content="#0a0510">
+<title>Для Даши</title>
+<!--
+  ФОТО: положи файл photo.jpg рядом с этим index.html
+  или замени имя в <img src="photo.jpg">
+-->
 <style>
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { height: 100%; }
+:root { --pink: #ff7aa8; --deep-pink: #ff5a8f; --bg: #0a0510; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: Georgia, "Times New Roman", "PT Serif", serif;
+  background: var(--bg); color: #f4e7ee; overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  body {
-    margin: 0;
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 48px 20px 72px;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% -20%, #4a1c58 0%, transparent 60%),
-      radial-gradient(ellipse 100% 70% at 50% 110%, #3a0f22 0%, transparent 55%),
-      radial-gradient(ellipse 90% 70% at 50% -10%, #34143c 0%, #1b0d24 45%, #0a0610 100%);
-    color: #f4e7ee;
-    font-family: Georgia, "Times New Roman", "PT Serif", serif;
-    overflow-x: hidden;
-    -webkit-tap-highlight-color: transparent;
-  }
+.bg-gradient {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 60% at 20% 10%, rgba(80,20,90,.45), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 80% 90%, rgba(120,20,60,.4), transparent 60%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, #1a0a24 0%, #0a0510 80%);
+}
+.aurora {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 40% 50% at 25% 30%, rgba(140,50,200,.18), transparent 70%),
+    radial-gradient(ellipse 40% 50% at 75% 50%, rgba(220,50,130,.15), transparent 70%),
+    radial-gradient(ellipse 50% 50% at 50% 85%, rgba(255,80,140,.10), transparent 70%);
+  animation: auroraDrift 30s ease-in-out infinite alternate;
+}
+@keyframes auroraDrift { 0% { transform: translate(0,0); } 100% { transform: translate(2%,-1%); } }
 
-  /* ---------- звёзды ---------- */
-  .sky { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-  .sky i {
-    position: absolute; background: #fff; border-radius: 50%;
-    opacity: .45; animation: twinkle 4s ease-in-out infinite;
-    box-shadow: 0 0 6px rgba(255,255,255,.9);
-  }
-  @keyframes twinkle { 0%,100% { opacity: .12; } 50% { opacity: .9; } }
+.stars-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.star-css { position: absolute; background: #fff; border-radius: 50%; animation: twinkle 4s ease-in-out infinite; }
+@keyframes twinkle { 0%,100% { opacity: .15; } 50% { opacity: .9; } }
 
-  /* ---------- светлячки ---------- */
-  .fireflies { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
-  .firefly {
-    position: absolute; bottom: -20px; border-radius: 50%;
-    background: radial-gradient(circle, #fff 0%, #ffb3d1 40%, #ff5a8f 100%);
-    box-shadow: 0 0 10px #ffa0c0, 0 0 22px #ff6b9d, 0 0 40px rgba(255,100,150,.6);
-    opacity: 0;
-    animation: rise linear infinite;
-  }
-  @keyframes rise {
-    0%   { transform: translate3d(0, 0, 0) scale(.4); opacity: 0; }
-    15%  { opacity: 1; }
-    85%  { opacity: 1; }
-    100% { transform: translate3d(30px, -105vh, 0) scale(1.2); opacity: 0; }
-  }
+.fireflies, .petals-fall {
+  position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1;
+}
+.firefly {
+  position: absolute; bottom: -30px; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #ffb3d1 50%, #ff5a8f 100%);
+  opacity: 0; animation: rise linear infinite;
+}
+@keyframes rise {
+  0% { transform: translate3d(0,0,0) scale(.4); opacity: 0; }
+  15% { opacity: .9; } 85% { opacity: .9; }
+  100% { transform: translate3d(30px,-105vh,0) scale(1.2); opacity: 0; }
+}
+.petal-fall {
+  position: absolute; top: -50px;
+  background: radial-gradient(ellipse at 50% 90%, #ff9db7, #b5244a 70%);
+  border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%;
+  opacity: 0; animation: petalFall linear infinite;
+}
+@keyframes petalFall {
+  0% { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 0; }
+  12% { opacity: .85; }
+  100% { transform: translate3d(60px, 115vh, 0) rotate(680deg); opacity: 0; }
+}
 
-  /* ---------- падающие лепестки ---------- */
-  .petals-fall { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
-  .petal-fall {
-    position: absolute; top: -40px; width: 14px; height: 17px;
-    background: radial-gradient(ellipse at 50% 90%, #ff9db7, #b5244a 70%);
-    border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%;
-    box-shadow: 0 0 8px rgba(255,120,160,.5);
-    opacity: 0; animation: fall linear infinite;
-  }
-  @keyframes fall {
-    0%   { transform: translate3d(0,-10vh,0) rotate(0deg); opacity: 0; }
-    12%  { opacity: .9; }
-    100% { transform: translate3d(70px, 112vh, 0) rotate(720deg); opacity: 0; }
-  }
+section {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 20px; z-index: 2;
+}
 
-  /* ---------- сцена ---------- */
-  .scene {
-    position: relative;
-    width: min(430px, 92vw);
-    padding-top: 290px;
-    perspective: 1500px;
-    z-index: 2;
-  }
+/* INTRO */
+.scene-intro { flex-direction: column; gap: 30px; text-align: center; }
+.intro-name {
+  font-size: clamp(64px, 15vw, 180px);
+  font-style: italic; letter-spacing: -.03em; font-weight: 400;
+  background: linear-gradient(180deg, #fff 0%, #ffb8d0 55%, #ff5a8f 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  line-height: 1; padding-bottom: .1em;
+  opacity: 0; transform: translateY(30px) scale(.95);
+  animation: nameIn 2.4s .3s cubic-bezier(.2,.8,.3,1) forwards;
+  text-shadow: 0 0 40px rgba(255,120,160,.4);
+}
+@keyframes nameIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+.intro-sub {
+  font-size: clamp(13px, 1.6vw, 18px);
+  color: rgba(255,220,235,.85);
+  letter-spacing: .5em; text-transform: uppercase;
+  opacity: 0; animation: fadeInUp 1.4s 2s ease forwards; padding-left: .5em;
+}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.scroll-hint {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  opacity: 0; animation: fadeInUp 1s 3s ease forwards;
+}
+.scroll-hint-text { font-size: 11px; letter-spacing: .4em; text-transform: uppercase; color: rgba(255,200,220,.7); }
+.scroll-arrow {
+  width: 22px; height: 22px;
+  border-right: 2px solid rgba(255,180,210,.7);
+  border-bottom: 2px solid rgba(255,180,210,.7);
+  transform: rotate(45deg);
+  animation: arrowBounce 2.2s ease-in-out infinite;
+}
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0) rotate(45deg); opacity: .4; }
+  50% { transform: translateY(10px) rotate(45deg); opacity: 1; }
+}
 
-  /* ---------- роза ---------- */
-  .rose-wrap {
-    position: absolute; left: 50%; top: 0;
-    width: 240px; height: 380px; margin-left: -120px;
-    z-index: 1;
-  }
+/* WHISPER */
+.scene-whisper { text-align: center; }
+.whisper-text {
+  font-size: clamp(22px, 3.6vw, 42px);
+  font-style: italic; color: rgba(255,230,240,.95);
+  max-width: 720px; line-height: 1.7; padding: 0 10px;
+  opacity: 0; transform: translateY(30px);
+  transition: all 1.6s cubic-bezier(.2,.8,.3,1);
+}
+.whisper-text.visible { opacity: 1; transform: translateY(0); }
 
-  /* пульсирующий ореол */
-  .rose-glow {
-    position: absolute; left: 50%; top: 100px;
-    width: 340px; height: 340px;
-    margin-left: -170px; margin-top: -170px;
-    background: radial-gradient(circle,
-      rgba(255,140,180,.42) 0%,
-      rgba(255,80,130,.20) 32%,
-      rgba(200,30,90,.08) 55%,
-      transparent 72%);
-    border-radius: 50%;
-    filter: blur(14px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0;
-    animation: glowPulse 4.5s 0.6s ease-in-out infinite;
-  }
-  @keyframes glowPulse {
-    0%, 100% { opacity: .75; transform: scale(1); }
-    50%      { opacity: 1;  transform: scale(1.18); }
-  }
+/* HEART */
+.scene-heart { flex-direction: column; gap: 40px; padding: 40px 10px; overflow: hidden; }
+.heart-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.heart-caption {
+  position: relative; z-index: 2;
+  font-size: clamp(16px, 2.2vw, 22px);
+  font-style: italic; color: rgba(255,220,235,.9);
+  text-align: center; max-width: 560px; padding: 0 20px;
+  opacity: 0; transform: translateY(20px);
+  transition: all 1.4s 1.5s; line-height: 1.7;
+}
+.heart-caption.visible { opacity: 1; transform: translateY(0); }
 
-  /* вращающиеся лучи */
-  .rays {
-    position: absolute; left: 50%; top: 100px;
-    width: 380px; height: 380px;
-    margin-left: -190px; margin-top: -190px;
-    background: conic-gradient(from 0deg,
-      transparent 0deg,
-      rgba(255,180,210,.16) 12deg,
-      transparent 24deg,
-      transparent 60deg,
-      rgba(255,180,210,.12) 72deg,
-      transparent 84deg,
-      transparent 130deg,
-      rgba(255,180,210,.14) 142deg,
-      transparent 154deg,
-      transparent 200deg,
-      rgba(255,180,210,.10) 212deg,
-      transparent 224deg,
-      transparent 280deg,
-      rgba(255,180,210,.13) 292deg,
-      transparent 304deg);
-    border-radius: 50%;
-    filter: blur(2px);
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0;
-    animation:
-      raysIn 2s 0.5s ease forwards,
-      raysRotate 40s 1s linear infinite;
-  }
-  @keyframes raysIn { to { opacity: .65; } }
-  @keyframes raysRotate { to { transform: rotate(360deg); } }
+/* MESSAGE */
+.scene-message { flex-direction: column; gap: 36px; text-align: center; padding: 100px 24px; }
+.message-line {
+  font-size: clamp(20px, 2.8vw, 32px);
+  font-style: italic; color: rgba(255,235,245,.95);
+  line-height: 1.6; max-width: 700px;
+  opacity: 0; transform: translateY(30px);
+  transition: all 1.3s cubic-bezier(.2,.8,.3,1);
+}
+.message-line.visible { opacity: 1; transform: translateY(0); }
+.message-line em { color: var(--pink); font-style: italic; }
 
-  /* искры вокруг розы */
-  .sparkles {
-    position: absolute; left: 50%; top: 100px;
-    width: 0; height: 0;
-    pointer-events: none;
-    z-index: 6;
-  }
-  .sparkle {
-    position: absolute; width: 4px; height: 4px; margin: -2px 0 0 -2px;
-    background: #fff; border-radius: 50%;
-    box-shadow: 0 0 6px #fff, 0 0 14px #ff8fbb, 0 0 24px rgba(255,100,150,.6);
-    opacity: 0;
-    animation: sparkleAnim 3s ease-in-out infinite;
-  }
-  @keyframes sparkleAnim {
-    0%, 100% { opacity: 0; transform: scale(.2); }
-    50%      { opacity: 1; transform: scale(1.5); }
-  }
+/* FINALE */
+.scene-finale { flex-direction: column; gap: 28px; text-align: center; }
+.finale-title {
+  font-size: clamp(38px, 7.5vw, 88px);
+  font-style: italic;
+  background: linear-gradient(180deg, #fff 0%, #ffb8d0 55%, #ff5a8f 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  opacity: 0; transform: translateY(30px);
+  transition: all 1.4s; line-height: 1.1; padding: 0 20px .15em;
+}
+.finale-title.visible { opacity: 1; transform: translateY(0); }
+.finale-text {
+  font-size: clamp(16px, 1.9vw, 22px);
+  font-style: italic; color: rgba(255,220,235,.9);
+  max-width: 620px; line-height: 1.85; padding: 0 20px;
+  opacity: 0; transform: translateY(20px);
+  transition: all 1.4s .3s;
+}
+.finale-text.visible { opacity: 1; transform: translateY(0); }
+.finale-cont {
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-style: italic; color: rgba(255,180,210,.8);
+  letter-spacing: .15em; margin-top: 10px;
+  opacity: 0; transition: opacity 1.4s .9s;
+}
+.finale-cont.visible { opacity: 1; }
+.finale-sign {
+  font-size: 22px; font-style: italic; color: var(--pink);
+  margin-top: 30px; opacity: 0; transition: opacity 1.4s 1.2s;
+}
+.finale-sign.visible { opacity: 1; }
 
-  .rose { position: relative; width: 100%; height: 100%; }
+/* KISS SCENE */
+.scene-kiss { flex-direction: column; gap: 40px; padding: 100px 20px; }
+.photo-frame {
+  position: relative;
+  width: min(360px, 82vw);
+  aspect-ratio: 4/5;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 40px 80px -20px rgba(0,0,0,.85),
+    0 0 60px rgba(255,120,160,.35),
+    0 0 0 1px rgba(255,255,255,.12) inset;
+  opacity: 0;
+  transform: scale(.9) translateY(30px);
+  transition: all 1.6s cubic-bezier(.2,.8,.3,1);
+  animation: photoBreath 6s ease-in-out infinite;
+}
+.photo-frame.visible { opacity: 1; transform: scale(1) translateY(0); }
+@keyframes photoBreath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+}
+.photo-placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #3a1530, #1a0a24);
+  color: rgba(255,180,210,.4);
+  font-size: 90px;
+}
+.photo-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+.kiss-overlay {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+.kiss-mark {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  animation: kissGhost 2.6s ease-out forwards;
+  filter: drop-shadow(0 0 8px rgba(255,100,140,.7));
+  transform-origin: center;
+}
+@keyframes kissGhost {
+  0%   { opacity: 0; transform: scale(.3) rotate(var(--rot, 0deg)); }
+  20%  { opacity: 1; transform: scale(1) rotate(var(--rot, 0deg)); }
+  60%  { opacity: .9; transform: scale(1.2) rotate(var(--rot, 0deg)); }
+  100% { opacity: 0; transform: scale(1.5) rotate(var(--rot, 0deg)); }
+}
+.flying-kiss {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  animation: kissFly 2.2s ease-out forwards;
+  filter: drop-shadow(0 0 14px rgba(255,100,140,.9));
+  transform-origin: center;
+}
+@keyframes kissFly {
+  0%   { opacity: 0; transform: translateY(0) scale(.3) rotate(-20deg); }
+  20%  { opacity: 1; transform: translateY(-20px) scale(.9) rotate(-5deg); }
+  60%  { opacity: 1; transform: translateY(-80px) scale(1.3) rotate(5deg); }
+  100% { opacity: 0; transform: translateY(-150px) scale(1.7) rotate(15deg); }
+}
+.heart-float {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  animation: floatHeart linear infinite;
+  opacity: 0;
+}
+@keyframes floatHeart {
+  0%   { opacity: 0; transform: translateY(0) scale(.4); }
+  20%  { opacity: 1; }
+  80%  { opacity: .7; }
+  100% { opacity: 0; transform: translateY(-120px) scale(1.2); }
+}
+.kiss-caption {
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-style: italic; color: rgba(255,225,240,.95);
+  text-align: center; max-width: 560px; padding: 0 20px;
+  opacity: 0; transform: translateY(20px);
+  transition: all 1.4s .6s; line-height: 1.7;
+}
+.kiss-caption.visible { opacity: 1; transform: translateY(0); }
+.kiss-caption .sig { color: var(--pink); }
 
-  /* стебель */
-  .stem {
-    position: absolute; left: 50%; bottom: 0;
-    width: 9px; height: 210px; margin-left: -4.5px;
-    background: linear-gradient(90deg, #163821, #4f9f58 45%, #163821);
-    border-radius: 6px 6px 3px 3px;
-    transform-origin: bottom center;
-    transform: scaleY(0);
-    animation: growStem 1.3s .25s cubic-bezier(.2,.8,.3,1) forwards;
-    box-shadow: 0 0 8px rgba(100,200,120,.3);
-  }
-  @keyframes growStem { to { transform: scaleY(1); } }
+/* ГЛОУ ПОД ФОТО */
+.scene-kiss::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 500px; height: 500px;
+  margin: -250px 0 0 -250px;
+  background: radial-gradient(circle, rgba(255,120,160,.22) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: kissGlow 4s ease-in-out infinite;
+}
+@keyframes kissGlow {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
 
-  /* шипы */
-  .thorn {
-    position: absolute; left: 50%;
-    width: 0; height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    opacity: 0;
-    filter: drop-shadow(0 0 2px rgba(0,0,0,.5));
-    animation: thornIn .5s ease forwards;
-  }
-  .thorn-1 {
-    bottom: 175px; margin-left: 2px;
-    border-bottom: 12px solid #3d7a45;
-    transform-origin: left center;
-    transform: rotate(40deg) scale(0);
-    animation-delay: 1.3s;
-  }
-  .thorn-2 {
-    bottom: 120px; margin-left: -12px;
-    border-bottom: 10px solid #347040;
-    transform-origin: right center;
-    transform: rotate(-40deg) scale(0);
-    animation-delay: 1.5s;
-  }
-  @keyframes thornIn {
-    to { opacity: 1; }
-  }
-  .thorn-1 { animation-name: thornIn1; }
-  @keyframes thornIn1 { to { opacity: 1; transform: rotate(40deg) scale(1); } }
-  .thorn-2 { animation-name: thornIn2; }
-  @keyframes thornIn2 { to { opacity: 1; transform: rotate(-40deg) scale(1); } }
+#fireworks { position: fixed; inset: 0; pointer-events: none; z-index: 100; }
 
-  /* листья */
-  .leaf {
-    position: absolute; left: 50%;
-    width: 78px; height: 36px; opacity: 0;
-    background: linear-gradient(135deg, #6cc274, #1d4a28 80%);
-    box-shadow: inset 0 0 16px rgba(0,0,0,.35), 0 0 12px rgba(100,200,120,.25);
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,.3));
-  }
-  .leaf-l {
-    bottom: 150px; margin-left: -76px;
-    border-radius: 100% 0 100% 0 / 100% 0 100% 0;
-    animation: leafInL .9s 1.05s cubic-bezier(.2,.8,.3,1) forwards;
-  }
-  .leaf-r {
-    bottom: 95px;
-    border-radius: 0 100% 0 100% / 0 100% 0 100%;
-    animation: leafInR .9s 1.3s cubic-bezier(.2,.8,.3,1) forwards;
-  }
-  @keyframes leafInL {
-    from { opacity: 0; transform: rotate(-16deg) scale(.15); }
-    to   { opacity: .95; transform: rotate(-16deg) scale(1); }
-  }
-  @keyframes leafInR {
-    from { opacity: 0; transform: rotate(18deg) scale(.15); }
-    to   { opacity: .95; transform: rotate(18deg) scale(1); }
-  }
+/* UI */
+.nav-dots {
+  position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 12px; z-index: 200;
+}
+.nav-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,.25); cursor: pointer;
+  border: none; padding: 0; transition: all .3s;
+}
+.nav-dot.active {
+  background: var(--pink);
+  box-shadow: 0 0 12px var(--pink);
+  transform: scale(1.4);
+}
+.music-toggle {
+  position: fixed; bottom: 20px; right: 20px;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.22);
+  color: #fff; cursor: pointer; z-index: 200;
+  font-size: 20px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: all .3s; font-family: Georgia, serif;
+}
+.music-toggle:hover { background: rgba(255,150,190,.25); }
+.music-toggle.on { background: rgba(255,120,160,.35); box-shadow: 0 0 20px rgba(255,120,160,.6); }
+.scroll-progress {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 2px; z-index: 300;
+  background: rgba(255,255,255,.04);
+}
+.scroll-progress-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--pink), var(--deep-pink));
+  box-shadow: 0 0 8px var(--pink);
+}
 
-  /* голова розы */
-  .head {
-    position: absolute; left: 50%; top: 0;
-    width: 200px; height: 200px; margin-left: -100px;
-    transform-origin: 50% 100%;
-    animation:
-      sway 7s 3s ease-in-out infinite alternate,
-      headGlow 4s 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 22px rgba(255,100,140,.55))
-            drop-shadow(0 0 44px rgba(255,60,120,.28));
-  }
-  @keyframes sway {
-    from { transform: rotate(-1.6deg); }
-    to   { transform: rotate(1.6deg); }
-  }
-  @keyframes headGlow {
-    0%, 100% {
-      filter: drop-shadow(0 0 18px rgba(255,100,140,.45))
-              drop-shadow(0 0 40px rgba(255,60,120,.22));
-    }
-    50% {
-      filter: drop-shadow(0 0 30px rgba(255,120,160,.75))
-              drop-shadow(0 0 60px rgba(255,80,140,.45));
-    }
-  }
+@media (max-width: 500px) {
+  .nav-dots { right: 10px; gap: 10px; }
+  .nav-dot { width: 7px; height: 7px; }
+  .music-toggle { bottom: 14px; right: 14px; width: 42px; height: 42px; font-size: 17px; }
+  .scene-message { padding: 80px 18px; gap: 28px; }
+  .scene-kiss { padding: 80px 14px; }
+}
 
-  .petal {
-    position: absolute; left: 50%; top: 50%;
-    transform-origin: 50% 100%;
-    border-radius: 50% 50% 46% 46% / 62% 62% 38% 38%;
-    box-shadow:
-      inset 0 -12px 20px rgba(60,0,20,.55),
-      inset 0 10px 16px rgba(255,255,255,.28),
-      0 0 14px rgba(255,80,140,.45);
-    will-change: transform;
-    backface-visibility: hidden;
-    animation: petalBreath 5s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
-  @keyframes petalBreath {
-    0%, 100% { filter: brightness(1); }
-    50%      { filter: brightness(1.12); }
-  }
-
-  /* центр розы */
-  .rose-center {
-    position: absolute; left: 50%; top: 50%;
-    width: 22px; height: 22px;
-    margin-left: -11px; margin-top: -11px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 50% 40%, #ffd4e0 0%, #ff7096 30%, #8b1f3f 100%);
-    box-shadow:
-      inset 0 0 8px rgba(0,0,0,.5),
-      0 0 18px rgba(255,140,180,.9),
-      0 0 32px rgba(255,100,150,.6);
-    z-index: 20;
-    opacity: 0;
-    animation: centerIn 1s 1.6s ease forwards, centerPulse 3s 2.6s ease-in-out infinite;
-  }
-  @keyframes centerIn { to { opacity: 1; } }
-  @keyframes centerPulse {
-    0%, 100% { transform: scale(1); box-shadow: inset 0 0 8px rgba(0,0,0,.5), 0 0 18px rgba(255,140,180,.9), 0 0 32px rgba(255,100,150,.6); }
-    50%      { transform: scale(1.1); box-shadow: inset 0 0 8px rgba(0,0,0,.5), 0 0 28px rgba(255,160,200,1), 0 0 50px rgba(255,120,170,.85); }
-  }
-
-  /* ---------- письмо ---------- */
-  .letter {
-    position: relative; z-index: 2;
-    padding: 34px 30px 30px;
-    border-radius: 18px;
-    background: linear-gradient(165deg, #fdf7f0 0%, #f7ebdf 55%, #efdfd0 100%);
-    color: #3b2a30;
-    box-shadow:
-      0 34px 70px -22px rgba(0,0,0,.85),
-      0 0 0 1px rgba(255,255,255,.55) inset,
-      0 1px 0 rgba(255,255,255,.9) inset,
-      0 0 40px rgba(255,140,180,.18);
-    transform-origin: top center;
-    transform: rotateX(-92deg) scale(.96);
-    opacity: 0;
-    transition:
-      transform 1.35s cubic-bezier(.2,.85,.25,1),
-      opacity .9s ease;
-  }
-  .letter.open { transform: rotateX(0) scale(1); opacity: 1; }
-
-  .letter::after {
-    content: "";
-    position: absolute; inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(circle at 50% 0%, rgba(255,255,255,.7), transparent 60%);
-    pointer-events: none;
-  }
-
-  .to {
-    margin: 0 0 18px;
-    font-size: 27px;
-    font-style: italic;
-    color: #8b1f3f;
-    letter-spacing: .02em;
-    text-shadow: 0 0 18px rgba(255,120,160,.3);
-  }
-
-  .body {
-    margin: 0 0 22px;
-    font-size: 16.5px;
-    line-height: 1.78;
-    white-space: pre-line;
-    min-height: 10em;
-  }
-  .body.typing::after {
-    content: "|";
-    display: inline-block;
-    margin-left: 2px;
-    color: #8b1f3f;
-    animation: blink 1s steps(1) infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  .sign {
-    margin: 0;
-    text-align: right;
-    font-style: italic;
-    font-size: 18px;
-    color: #8b1f3f;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity .8s, transform .8s;
-  }
-  .sign.show { opacity: 1; transform: translateY(0); }
-
-  /* ---------- кнопка ---------- */
-  .open-btn {
-    position: absolute;
-    left: 50%; top: 348px;
-    transform: translate(-50%, 0);
-    padding: 15px 44px;
-    border: 1px solid rgba(255,255,255,.28);
-    border-radius: 999px;
-    background: linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.04));
-    color: #fbeef4;
-    font-family: inherit;
-    font-size: 15px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    cursor: pointer;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    z-index: 5;
-    animation: btnPulse 2.6s ease-in-out infinite;
-    transition: opacity .5s, transform .5s, background .35s;
-  }
-  @keyframes btnPulse {
-    0%, 100% {
-      box-shadow: 0 14px 34px -14px rgba(255,110,160,.85),
-                  0 0 0 rgba(255,150,190,0);
-    }
-    50% {
-      box-shadow: 0 14px 34px -14px rgba(255,110,160,1),
-                  0 0 24px rgba(255,150,190,.55);
-    }
-  }
-  .open-btn:hover {
-    background: linear-gradient(160deg, rgba(255,150,190,.32), rgba(255,255,255,.07));
-    transform: translate(-50%, -2px);
-    animation-play-state: paused;
-  }
-  .open-btn:active { transform: translate(-50%, 1px) scale(.98); }
-  .open-btn.hide { opacity: 0; pointer-events: none; transform: translate(-50%, 14px); }
-
-  /* ---------- адаптив ---------- */
-  @media (max-width: 430px) {
-    body { padding: 36px 16px 56px; }
-    .scene { padding-top: 236px; }
-    .rose-wrap { transform: scale(.78); transform-origin: top center; }
-    .letter { padding: 28px 22px 26px; }
-    .to { font-size: 24px; }
-    .body { font-size: 15.5px; }
-    .open-btn { top: 296px; padding: 14px 36px; }
-  }
-  @media (max-height: 720px) and (min-width: 431px) {
-    body { padding: 30px 20px 48px; }
-    .scene { padding-top: 236px; }
-    .rose-wrap { transform: scale(.8); transform-origin: top center; }
-    .open-btn { top: 300px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: .01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: .01ms !important;
-    }
-  }
+}
 </style>
 </head>
 <body>
 
-<div class="sky" id="sky" aria-hidden="true"></div>
-<div class="fireflies" id="fireflies" aria-hidden="true"></div>
-<div class="petals-fall" id="petalsFall" aria-hidden="true"></div>
+<div class="bg-gradient"></div>
+<div class="aurora"></div>
+<div class="stars-bg" id="starsBg"></div>
+<div class="fireflies" id="fireflies"></div>
+<div class="petals-fall" id="petalsFall"></div>
+<canvas id="fireworks"></canvas>
 
-<main class="scene" id="scene">
+<div class="scroll-progress"><div class="scroll-progress-bar" id="progressBar"></div></div>
 
-  <div class="rose-wrap" aria-hidden="true">
-    <div class="rose-glow"></div>
-    <div class="rays"></div>
-    <div class="sparkles" id="sparkles"></div>
-    <div class="rose" id="rose">
-      <div class="stem"></div>
-      <div class="thorn thorn-1"></div>
-      <div class="thorn thorn-2"></div>
-      <div class="leaf leaf-l"></div>
-      <div class="leaf leaf-r"></div>
-      <div class="head" id="head">
-        <div class="rose-center"></div>
-      </div>
-    </div>
+<div class="nav-dots" id="navDots">
+  <button class="nav-dot active" data-target="intro" aria-label="Начало"></button>
+  <button class="nav-dot" data-target="whisper" aria-label="Шёпот"></button>
+  <button class="nav-dot" data-target="heart" aria-label="Сердце"></button>
+  <button class="nav-dot" data-target="message" aria-label="Послание"></button>
+  <button class="nav-dot" data-target="finale" aria-label="Финал"></button>
+  <button class="nav-dot" data-target="kiss" aria-label="Поцелуй"></button>
+</div>
+
+<button class="music-toggle" id="musicToggle" title="Включить музыку" aria-label="Музыка">♪</button>
+
+<section class="scene-intro" id="intro">
+  <h1 class="intro-name">Даша</h1>
+  <p class="intro-sub">для тебя</p>
+  <div class="scroll-hint">
+    <span class="scroll-hint-text">листай</span>
+    <div class="scroll-arrow"></div>
   </div>
+</section>
 
-  <article class="letter" id="letter">
-    <p class="to" id="toLine"></p>
-    <p class="body" id="bodyText"></p>
-    <p class="sign" id="signLine"></p>
-  </article>
+<section class="scene-whisper" id="whisper">
+  <p class="whisper-text">Смотри внимательно.<br>Это всё — о тебе.</p>
+</section>
 
-  <button class="open-btn" id="openBtn" type="button">Открыть</button>
-</main>
+<section class="scene-heart" id="heart">
+  <canvas class="heart-canvas" id="heartCanvas"></canvas>
+  <p class="heart-caption" id="heartCaption">Сердце из тысячи звёзд.<br>Оно бьётся только для тебя.</p>
+</section>
+
+<section class="scene-message" id="message">
+  <p class="message-line">Ты — причина улыбаться.</p>
+  <p class="message-line">Ты — как тихое утро после долгой зимы.</p>
+  <p class="message-line">Ты — <em>лучшее</em>, что со мной случилось.</p>
+  <p class="message-line">Что будет завтра — не знаю. Но очень хочу, чтобы там была <em>ты</em>.</p>
+</section>
+
+<section class="scene-finale" id="finale">
+  <h2 class="finale-title">Спасибо за тебя</h2>
+  <p class="finale-text">Пусть всё, что ты загадала, обязательно сбудется.<br>Пусть каждый твой день начинается с улыбки и заканчивается спокойствием.</p>
+  <p class="finale-cont">Продолжение — за нами</p>
+  <p class="finale-sign">— лысый</p>
+</section>
+
+<section class="scene-kiss" id="kiss">
+  <div class="photo-frame" id="photoFrame">
+    <div class="photo-placeholder">💌</div>
+    <img src="photo.jpg" alt="Даша" class="photo-img" onerror="this.style.display='none'">
+    <div class="kiss-overlay" id="kissOverlay"></div>
+  </div>
+  <p class="kiss-caption" id="kissCaption">Целую. И это только начало. <span class="sig">— лысый 💋</span></p>
+</section>
 
 <script>
-/* =========================================================
-   НАСТРОЙКИ
-   ========================================================= */
-const CONFIG = {
-  to:   "Даря",
-  from: "лысый",
-  speed: 26,
-  text:
-`Эта роза не завянет.
-
-Пусть каждый твой день начинается с улыбки, а заканчивается спокойствием. Пусть всё, что ты загадала, обязательно сбудется.
-
-Спасибо, что ты есть.`
-};
-
-/* =========================  звёзды  ========================= */
-(function stars() {
-  const sky = document.getElementById('sky');
+/* ============================================================
+   CSS STARS
+   ============================================================ */
+(function buildStars() {
+  const box = document.getElementById('starsBg');
   const frag = document.createDocumentFragment();
-  for (let i = 0; i < 90; i++) {
-    const s = document.createElement('i');
-    const size = Math.random() * 2.2 + 1;
+  const count = window.innerWidth < 600 ? 45 : 70;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'star-css';
+    const size = Math.random() * 2 + 0.8;
     s.style.left = Math.random() * 100 + '%';
     s.style.top = Math.random() * 100 + '%';
     s.style.width = s.style.height = size.toFixed(1) + 'px';
     s.style.animationDelay = (Math.random() * 5).toFixed(2) + 's';
-    s.style.animationDuration = (3 + Math.random() * 4).toFixed(2) + 's';
+    s.style.animationDuration = (3 + Math.random() * 3).toFixed(2) + 's';
     frag.appendChild(s);
   }
-  sky.appendChild(frag);
+  box.appendChild(frag);
 })();
 
-/* =========================  светлячки  ========================= */
-(function fireflies() {
+/* FIREFLIES */
+(function buildFireflies() {
   const box = document.getElementById('fireflies');
-  for (let i = 0; i < 18; i++) {
+  const frag = document.createDocumentFragment();
+  const count = window.innerWidth < 600 ? 8 : 12;
+  for (let i = 0; i < count; i++) {
     const f = document.createElement('div');
     f.className = 'firefly';
-    const size = (3 + Math.random() * 4).toFixed(1);
+    const size = 3 + Math.random() * 3;
     f.style.left = Math.random() * 100 + '%';
-    f.style.width = f.style.height = size + 'px';
-    f.style.animationDuration = (9 + Math.random() * 9).toFixed(1) + 's';
-    f.style.animationDelay = (Math.random() * 12).toFixed(1) + 's';
-    box.appendChild(f);
+    f.style.width = f.style.height = size.toFixed(1) + 'px';
+    f.style.animationDuration = (12 + Math.random() * 8).toFixed(1) + 's';
+    f.style.animationDelay = (Math.random() * 14).toFixed(1) + 's';
+    frag.appendChild(f);
   }
+  box.appendChild(frag);
 })();
 
-/* =========================  роза  ========================= */
-const headEl = document.getElementById('head');
-const PETALS = [];
-
-const LAYERS = [
-  { n: 10, w: 108, h: 114, hue: 340, sat: 62, lig: 44, delay: 0.00, z: 1  },
-  { n: 9,  w: 94,  h: 100, hue: 342, sat: 66, lig: 48, delay: 0.12, z: 2  },
-  { n: 8,  w: 80,  h: 86,  hue: 345, sat: 70, lig: 51, delay: 0.24, z: 3  },
-  { n: 7,  w: 66,  h: 72,  hue: 347, sat: 73, lig: 54, delay: 0.36, z: 4  },
-  { n: 6,  w: 52,  h: 58,  hue: 349, sat: 76, lig: 57, delay: 0.48, z: 5  },
-  { n: 5,  w: 40,  h: 46,  hue: 351, sat: 79, lig: 60, delay: 0.60, z: 6  },
-  { n: 4,  w: 28,  h: 34,  hue: 352, sat: 82, lig: 63, delay: 0.72, z: 7  }
-];
-
-LAYERS.forEach((L, li) => {
-  const offset = li * 20;
-  for (let i = 0; i < L.n; i++) {
-    const angle = offset + (360 / L.n) * i;
-    const p = document.createElement('div');
-    p.className = 'petal';
-    p.style.width  = L.w + 'px';
-    p.style.height = L.h + 'px';
-    p.style.marginLeft = (-L.w / 2) + 'px';
-    p.style.marginTop  = (-L.h) + 'px';
-    p.style.zIndex = L.z;
-    p.style.background =
-      `radial-gradient(ellipse at 50% 100%,
-        hsl(${L.hue} ${L.sat}% ${L.lig + 26}%) 0%,
-        hsl(${L.hue} ${L.sat}% ${L.lig + 6}%) 38%,
-        hsl(${L.hue} ${L.sat}% ${L.lig - 8}%) 72%,
-        hsl(${L.hue} ${L.sat}% ${L.lig - 22}%) 100%)`;
-    p.style.setProperty('--a', angle + 'deg');
-    p.style.transform = 'rotate(var(--a)) scale(.28)';
-    p.style.transition = `transform 1.45s cubic-bezier(.18,.9,.25,1.05) ${L.delay}s`;
-    p.style.animationDelay = (1 + Math.random() * 4).toFixed(2) + 's';
-    headEl.appendChild(p);
-    PETALS.push(p);
-  }
-});
-
-function bloomRose() {
-  PETALS.forEach(p => {
-    p.style.transform = 'rotate(var(--a)) scale(1)';
-  });
-}
-
-/* =====================  искры вокруг розы  ===================== */
-(function sparkles() {
-  const box = document.getElementById('sparkles');
-  for (let i = 0; i < 16; i++) {
-    const s = document.createElement('div');
-    s.className = 'sparkle';
-    const angle = (i / 16) * Math.PI * 2 + Math.random() * 0.4;
-    const radius = 100 + Math.random() * 50;
-    s.style.left = Math.cos(angle) * radius + 'px';
-    s.style.top  = Math.sin(angle) * radius + 'px';
-    s.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
-    s.style.animationDuration = (2 + Math.random() * 2.5).toFixed(2) + 's';
-    const sz = (3 + Math.random() * 3).toFixed(1);
-    s.style.width = s.style.height = sz + 'px';
-    box.appendChild(s);
-  }
-})();
-
-/* =====================  падающие лепестки  ===================== */
-let petalsStarted = false;
-function startFallingPetals() {
-  if (petalsStarted) return;
-  petalsStarted = true;
+/* PETALS */
+(function buildPetals() {
   const box = document.getElementById('petalsFall');
-  for (let i = 0; i < 20; i++) {
+  const frag = document.createDocumentFragment();
+  const count = window.innerWidth < 600 ? 8 : 12;
+  for (let i = 0; i < count; i++) {
     const p = document.createElement('div');
     p.className = 'petal-fall';
     p.style.left = Math.random() * 100 + '%';
-    p.style.animationDuration = (9 + Math.random() * 8).toFixed(1) + 's';
-    p.style.animationDelay = (Math.random() * 10).toFixed(1) + 's';
-    p.style.transform = `scale(${(0.6 + Math.random() * 0.9).toFixed(2)})`;
-    box.appendChild(p);
+    p.style.width = (9 + Math.random() * 5) + 'px';
+    p.style.height = (11 + Math.random() * 7) + 'px';
+    p.style.animationDuration = (12 + Math.random() * 8).toFixed(1) + 's';
+    p.style.animationDelay = (Math.random() * 16).toFixed(1) + 's';
+    frag.appendChild(p);
+  }
+  box.appendChild(frag);
+})();
+
+/* ============================================================
+   HEART PARTICLE SCENE
+   ============================================================ */
+const heartCanvas = document.getElementById('heartCanvas');
+const heartCtx = heartCanvas.getContext('2d', { alpha: true });
+let heartParticles = [];
+let heartRunning = false;
+let heartAnimId = null;
+let heartStartTime = 0;
+const IS_MOBILE = window.innerWidth < 700;
+const HEART_N = IS_MOBILE ? 700 : 1400;
+
+function buildHeartParticles() {
+  heartParticles = [];
+  for (let i = 0; i < HEART_N; i++) {
+    const t = Math.random() * Math.PI * 2;
+    const r = Math.pow(Math.random(), 0.5);
+    const hx = 16 * Math.pow(Math.sin(t), 3) * r;
+    const hy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t)) * r;
+    const hz = (Math.random() - 0.5) * 6 * (1 - r * 0.4);
+    heartParticles.push({
+      x: hx, y: hy, z: hz,
+      size: 1.2 + Math.random() * 1.2,
+      drift: Math.random() * Math.PI * 2,
+      driftSpeed: 0.3 + Math.random() * 0.7
+    });
   }
 }
 
-/* =====================  печатная машинка  ===================== */
-function typeText(el, text, speed, done) {
-  el.classList.add('typing');
-  let i = 0;
-  (function step() {
-    el.textContent = text.slice(0, i);
-    if (i >= text.length) {
-      el.classList.remove('typing');
-      if (done) done();
+function resizeHeartCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = heartCanvas.getBoundingClientRect();
+  heartCanvas.width = rect.width * dpr;
+  heartCanvas.height = rect.height * dpr;
+}
+
+function drawHeart(now) {
+  if (!heartRunning) return;
+  if (!heartStartTime) heartStartTime = now;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = heartCanvas.width, H = heartCanvas.height;
+  const cx = W / 2, cy = H / 2;
+  const t = (now - heartStartTime) / 1000;
+
+  heartCtx.clearRect(0, 0, W, H);
+
+  const glowR = Math.min(W, H) * 0.55;
+  const glow = heartCtx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
+  glow.addColorStop(0, 'rgba(255, 90, 140, 0.14)');
+  glow.addColorStop(0.5, 'rgba(255, 70, 120, 0.05)');
+  glow.addColorStop(1, 'rgba(255, 50, 100, 0)');
+  heartCtx.fillStyle = glow;
+  heartCtx.fillRect(0, 0, W, H);
+
+  const angleY = t * 0.25;
+  const angleX = Math.sin(t * 0.15) * 0.15;
+  const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+  const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+  const scaleBase = Math.min(W, H) * 0.55 / 16;
+  const breath = 1 + Math.sin(t * 0.9) * 0.05;
+  const focal = 400;
+
+  heartCtx.globalCompositeOperation = 'lighter';
+  heartCtx.fillStyle = 'rgba(255, 130, 180, 0.55)';
+
+  for (let i = 0; i < heartParticles.length; i++) {
+    const p = heartParticles[i];
+    const dx = Math.sin(t * p.driftSpeed + p.drift) * 0.3;
+    const dy = Math.cos(t * p.driftSpeed * 0.7 + p.drift) * 0.3;
+    const x1 = (p.x + dx) * cosY - p.z * sinY;
+    const z1 = (p.x + dx) * sinY + p.z * cosY;
+    const y2 = (p.y + dy) * cosX - z1 * sinX;
+    const z2 = (p.y + dy) * sinX + z1 * cosX;
+    const scale = focal / (focal + z2 * 3);
+    const px = cx + x1 * scaleBase * breath * scale;
+    const py = cy + y2 * scaleBase * breath * scale;
+    if (px < -20 || px > W + 20 || py < -20 || py > H + 20) continue;
+    const sz = p.size * scale * dpr;
+    heartCtx.fillRect(px | 0, py | 0, sz, sz);
+  }
+  heartCtx.globalCompositeOperation = 'source-over';
+  heartAnimId = requestAnimationFrame(drawHeart);
+}
+
+function startHeart() {
+  if (heartRunning) return;
+  heartRunning = true;
+  if (heartParticles.length === 0) buildHeartParticles();
+  resizeHeartCanvas();
+  heartStartTime = 0;
+  heartAnimId = requestAnimationFrame(drawHeart);
+}
+function stopHeart() {
+  heartRunning = false;
+  if (heartAnimId) { cancelAnimationFrame(heartAnimId); heartAnimId = null; }
+}
+window.addEventListener('resize', () => { if (heartRunning) resizeHeartCanvas(); });
+
+/* ============================================================
+   FIREWORKS
+   ============================================================ */
+const fwCanvas = document.getElementById('fireworks');
+const fwCtx = fwCanvas.getContext('2d', { alpha: true });
+let fwParticles = [], fwRunning = false, fwAnimId = null, fwSpawnInterval = null;
+
+function resizeFw() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  fwCanvas.width = window.innerWidth * dpr;
+  fwCanvas.height = window.innerHeight * dpr;
+  fwCanvas.style.width = window.innerWidth + 'px';
+  fwCanvas.style.height = window.innerHeight + 'px';
+}
+
+const FW_COLORS = [
+  'rgba(255, 120, 160,', 'rgba(255, 180, 220,', 'rgba(255, 90, 130,',
+  'rgba(255, 220, 180,', 'rgba(200, 150, 255,'
+];
+
+function spawnFirework() {
+  if (!fwRunning) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const W = fwCanvas.width, H = fwCanvas.height;
+  const x = W * (0.15 + Math.random() * 0.7);
+  const y = H * (0.15 + Math.random() * 0.4);
+  const color = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
+  const count = IS_MOBILE ? 26 : 42;
+  const speed = (2.5 + Math.random() * 2.5) * dpr;
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.2;
+    const v = speed * (0.6 + Math.random() * 0.7);
+    fwParticles.push({
+      x, y, vx: Math.cos(angle) * v, vy: Math.sin(angle) * v,
+      life: 1, decay: 0.012 + Math.random() * 0.01, color,
+      size: (1.5 + Math.random() * 1.5) * dpr
+    });
+  }
+}
+
+function drawFireworks() {
+  if (!fwRunning) return;
+  const W = fwCanvas.width, H = fwCanvas.height;
+  fwCtx.clearRect(0, 0, W, H);
+  fwCtx.globalCompositeOperation = 'lighter';
+  for (let i = fwParticles.length - 1; i >= 0; i--) {
+    const p = fwParticles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.vx *= 0.99; p.vy *= 0.99;
+    p.life -= p.decay;
+    if (p.life <= 0) { fwParticles.splice(i, 1); continue; }
+    fwCtx.fillStyle = p.color + p.life.toFixed(2) + ')';
+    fwCtx.fillRect(p.x | 0, p.y | 0, p.size * p.life, p.size * p.life);
+  }
+  fwCtx.globalCompositeOperation = 'source-over';
+  fwAnimId = requestAnimationFrame(drawFireworks);
+}
+
+function startFireworks() {
+  if (fwRunning) return;
+  fwRunning = true; resizeFw();
+  spawnFirework();
+  fwSpawnInterval = setInterval(spawnFirework, 1700);
+  fwAnimId = requestAnimationFrame(drawFireworks);
+}
+function stopFireworks() {
+  fwRunning = false;
+  if (fwAnimId) { cancelAnimationFrame(fwAnimId); fwAnimId = null; }
+  if (fwSpawnInterval) { clearInterval(fwSpawnInterval); fwSpawnInterval = null; }
+  if (fwCtx && fwCanvas) fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+  fwParticles = [];
+}
+window.addEventListener('resize', () => { if (fwRunning) resizeFw(); });
+
+/* ============================================================
+   KISS SCENE
+   ============================================================ */
+let kissMarksTimer = null;
+let kissFlyTimer = null;
+
+function spawnKissMark() {
+  const overlay = document.getElementById('kissOverlay');
+  if (!overlay) return;
+  const k = document.createElement('div');
+  k.className = 'kiss-mark';
+  k.textContent = '💋';
+  k.style.left = (12 + Math.random() * 76) + '%';
+  k.style.top = (12 + Math.random() * 76) + '%';
+  k.style.fontSize = (28 + Math.random() * 22) + 'px';
+  k.style.setProperty('--rot', (Math.random() * 50 - 25).toFixed(1) + 'deg');
+  k.style.animationDelay = '0s';
+  overlay.appendChild(k);
+  setTimeout(() => k.remove(), 2700);
+}
+
+function spawnFlyingKiss() {
+  const overlay = document.getElementById('kissOverlay');
+  if (!overlay) return;
+  const k = document.createElement('div');
+  k.className = 'flying-kiss';
+  k.textContent = '💋';
+  k.style.left = (30 + Math.random() * 40) + '%';
+  k.style.top = '80%';
+  k.style.fontSize = (48 + Math.random() * 20) + 'px';
+  overlay.appendChild(k);
+  setTimeout(() => k.remove(), 2300);
+}
+
+function startKissScene() {
+  if (kissMarksTimer) return;
+  document.getElementById('photoFrame').classList.add('visible');
+  setTimeout(() => document.getElementById('kissCaption').classList.add('visible'), 800);
+  setTimeout(spawnKissMark, 600);
+  setTimeout(spawnFlyingKiss, 500);
+  kissMarksTimer = setInterval(spawnKissMark, 950);
+  kissFlyTimer = setInterval(spawnFlyingKiss, 3800);
+
+  // плавающие сердечки вокруг фото
+  const frame = document.getElementById('photoFrame');
+  for (let i = 0; i < 6; i++) {
+    const h = document.createElement('div');
+    h.className = 'heart-float';
+    h.textContent = ['💗','💖','💕','💞'][i % 4];
+    h.style.left = (5 + Math.random() * 90) + '%';
+    h.style.bottom = (Math.random() * 15) + '%';
+    h.style.fontSize = (12 + Math.random() * 14) + 'px';
+    h.style.animationDelay = (Math.random() * 4) + 's';
+    h.style.animationDuration = (4 + Math.random() * 3) + 's';
+    frame.appendChild(h);
+  }
+}
+
+function stopKissScene() {
+  if (kissMarksTimer) { clearInterval(kissMarksTimer); kissMarksTimer = null; }
+  if (kissFlyTimer) { clearInterval(kissFlyTimer); kissFlyTimer = null; }
+  document.querySelectorAll('.kiss-mark, .flying-kiss').forEach(el => el.remove());
+}
+
+/* ============================================================
+   SECTION OBSERVERS
+   ============================================================ */
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) {
+      if (entry.target.id === 'heart') stopHeart();
+      if (entry.target.id === 'finale') stopFireworks();
+      if (entry.target.id === 'kiss') stopKissScene();
       return;
     }
-    const ch = text[i];
-    i++;
-    let d = speed;
-    if (ch === ',')      d = speed * 6;
-    else if (ch === '.') d = speed * 11;
-    else if (ch === '—') d = speed * 5;
-    setTimeout(step, d + Math.random() * 16);
-  })();
-}
+    const id = entry.target.id;
+    if (id === 'whisper') {
+      entry.target.querySelector('.whisper-text').classList.add('visible');
+    }
+    if (id === 'heart') {
+      startHeart();
+      setTimeout(() => document.getElementById('heartCaption').classList.add('visible'), 1500);
+    }
+    if (id === 'message') {
+      const lines = entry.target.querySelectorAll('.message-line');
+      lines.forEach((line, i) => {
+        setTimeout(() => line.classList.add('visible'), i * 700);
+      });
+    }
+    if (id === 'finale') {
+      entry.target.querySelector('.finale-title').classList.add('visible');
+      entry.target.querySelector('.finale-text').classList.add('visible');
+      entry.target.querySelector('.finale-cont').classList.add('visible');
+      entry.target.querySelector('.finale-sign').classList.add('visible');
+      startFireworks();
+    }
+    if (id === 'kiss') {
+      startKissScene();
+    }
+  });
+}, { threshold: 0.25 });
 
-/* =====================  запуск сцены  ===================== */
-const openBtn  = document.getElementById('openBtn');
-const letterEl = document.getElementById('letter');
-const toLine   = document.getElementById('toLine');
-const bodyText = document.getElementById('bodyText');
-const signLine = document.getElementById('signLine');
+document.querySelectorAll('section').forEach(s => sectionObserver.observe(s));
 
-toLine.textContent = CONFIG.to + ',';
-signLine.textContent = '— ' + CONFIG.from;
+/* NAV DOTS */
+document.querySelectorAll('.nav-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    const target = document.getElementById(dot.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      document.querySelectorAll('.nav-dot').forEach(d => {
+        d.classList.toggle('active', d.dataset.target === id);
+      });
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('section').forEach(s => navObserver.observe(s));
 
-let started = false;
+/* PROGRESS BAR */
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0) + '%';
+}, { passive: true });
 
-function start() {
-  if (started) return;
-  started = true;
+/* ============================================================
+   MUSIC — расширенная пьеса (16 тактов) с подложкой
+   ============================================================ */
+let audioCtx = null, musicPlaying = false, masterGain = null, musicLoopTimer = null;
 
-  openBtn.classList.add('hide');
-  setTimeout(() => openBtn.remove(), 700);
+const NOTE = {
+  'A2':110.00,'B2':123.47,'C3':130.81,'D3':146.83,'E3':164.81,
+  'F3':174.61,'G3':196.00,'A3':220.00,'B3':246.94,
+  'C4':261.63,'D4':293.66,'E4':329.63,'F4':349.23,'G4':392.00,
+  'A4':440.00,'B4':493.88,'C5':523.25,'D5':587.33,'E5':659.25,
+  'F5':698.46,'G5':783.99,'A5':880.00,'B5':987.77,'C6':1046.50,
+  'F2':87.31,'G2':98.00
+};
 
-  bloomRose();
-  setTimeout(() => letterEl.classList.add('open'), 1700);
-  setTimeout(startFallingPetals, 1900);
+const BPM = 68;
+const BEAT = 60 / BPM;
 
-  setTimeout(() => {
-    typeText(bodyText, CONFIG.text, CONFIG.speed, () => {
-      setTimeout(() => signLine.classList.add('show'), 450);
+const BASS = [
+  ['A2','E3','A3','E3'], ['F2','C3','F3','C3'], ['C3','G3','C4','G3'], ['G2','D3','G3','D3'],
+  ['A2','E3','A3','E3'], ['F2','C3','F3','C3'], ['C3','G3','C4','G3'], ['G2','D3','G3','D3'],
+  ['F2','C3','F3','C3'], ['C3','G3','C4','G3'], ['A2','E3','A3','E3'], ['G2','D3','G3','D3'],
+  ['F2','C3','F3','C3'], ['C3','G3','C4','G3'], ['A2','E3','A3','E3'], ['G2','D3','G3','D3']
+];
+
+const PAD = [
+  'A3','F3','C4','G3','A3','F3','C4','G3',
+  'F3','C4','A3','G3','F3','C4','A3','G3'
+];
+
+const MELODY = [
+  ['E5', 0, 2], ['A5', 2, 1], ['G5', 3, 1],
+  ['F5', 4, 2], ['E5', 6, 1], ['D5', 7, 1],
+  ['C5', 8, 2], ['E5', 10, 1], ['G5', 11, 1],
+  ['B5', 12, 2], ['A5', 14, 1], ['G5', 15, 1],
+  ['A5', 16, 1], ['E5', 17, 1], ['A5', 18, 1], ['C6', 19, 1],
+  ['A5', 20, 2], ['F5', 22, 1], ['E5', 23, 1],
+  ['G5', 24, 1.5], ['E5', 25.5, 0.5], ['C5', 26, 1], ['E5', 27, 1],
+  ['D5', 28, 2], ['B4', 30, 2],
+  ['A5', 32, 1.5], ['G5', 33.5, 0.5], ['F5', 34, 2],
+  ['E5', 36, 1], ['G5', 37, 1], ['C6', 38, 2],
+  ['B5', 40, 1], ['A5', 41, 1], ['E5', 42, 2],
+  ['D5', 44, 1], ['B4', 45, 1], ['G5', 46, 2],
+  ['A5', 48, 2], ['C6', 50, 1], ['A5', 51, 1],
+  ['G5', 52, 1], ['E5', 53, 1], ['C5', 54, 2],
+  ['A5', 56, 1], ['C6', 57, 1], ['B5', 58, 1], ['A5', 59, 1],
+  ['G5', 60, 2], ['B4', 62, 2]
+];
+
+document.getElementById('musicToggle').addEventListener('click', () => {
+  const btn = document.getElementById('musicToggle');
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  if (musicPlaying) {
+    if (masterGain) masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+    clearTimeout(musicLoopTimer);
+    musicPlaying = false;
+    btn.classList.remove('on');
+    btn.textContent = '♪';
+  } else {
+    playSong();
+    musicPlaying = true;
+    btn.classList.add('on');
+    btn.textContent = '♪♪';
+  }
+});
+
+function playSong() {
+  if (!audioCtx) return;
+  if (masterGain) { try { masterGain.disconnect(); } catch(e){} }
+  masterGain = audioCtx.createGain();
+  masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(0.24, audioCtx.currentTime + 2.5);
+  masterGain.connect(audioCtx.destination);
+
+  const start = audioCtx.currentTime + 0.1;
+
+  // Подложка (тихий сустейн)
+  PAD.forEach((noteName, bar) => {
+    playPad(NOTE[noteName], start + bar * 4 * BEAT, 4 * BEAT, 0.045);
+  });
+
+  // Левая рука — арпеджио
+  BASS.forEach((chord, bar) => {
+    chord.forEach((noteName, i) => {
+      playPiano(NOTE[noteName], start + bar * 4 * BEAT + i * BEAT, BEAT * 0.9, 0.12);
     });
-  }, 2900);
+  });
+
+  // Правая рука — мелодия
+  MELODY.forEach(([noteName, pos, dur]) => {
+    playPiano(NOTE[noteName], start + pos * BEAT, dur * BEAT * 0.95, 0.2);
+  });
+
+  const totalDur = 64 * BEAT;
+  musicLoopTimer = setTimeout(() => {
+    if (musicPlaying) playSong();
+  }, (totalDur + 0.4) * 1000);
 }
 
-openBtn.addEventListener('click', start);
-setTimeout(() => { if (!started) start(); }, 12000);
+function playPiano(freq, time, duration, volume) {
+  const osc1 = audioCtx.createOscillator();
+  const osc2 = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+
+  osc1.type = 'triangle';
+  osc1.frequency.value = freq;
+  osc2.type = 'sine';
+  osc2.frequency.value = freq * 2;
+
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(freq * 6, time);
+  filter.frequency.exponentialRampToValueAtTime(freq * 1.5, time + duration);
+  filter.Q.value = 0.8;
+
+  const g2 = audioCtx.createGain();
+  g2.gain.value = 0.3;
+
+  gain.gain.setValueAtTime(0, time);
+  gain.gain.linearRampToValueAtTime(volume, time + 0.008);
+  gain.gain.exponentialRampToValueAtTime(volume * 0.45, time + 0.12);
+  gain.gain.exponentialRampToValueAtTime(0.0008, time + duration + 0.2);
+
+  osc1.connect(filter);
+  osc2.connect(g2); g2.connect(filter);
+  filter.connect(gain);
+  gain.connect(masterGain);
+
+  osc1.start(time);
+  osc2.start(time);
+  const stopAt = time + duration + 0.3;
+  osc1.stop(stopAt);
+  osc2.stop(stopAt);
+}
+
+function playPad(freq, time, duration, volume) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+
+  gain.gain.setValueAtTime(0, time);
+  gain.gain.linearRampToValueAtTime(volume, time + 1);
+  gain.gain.linearRampToValueAtTime(volume, time + duration - 1);
+  gain.gain.linearRampToValueAtTime(0, time + duration);
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+  osc.start(time);
+  osc.stop(time + duration + 0.1);
+}
 </script>
 </body>
 </html>
